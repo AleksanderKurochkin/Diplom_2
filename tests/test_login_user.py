@@ -13,15 +13,18 @@ class TestLoginUser:
 
         assert response.status_code == 200 and response.json().get("success") == True
 
-    @allure.title('Тест если при авторизации какого-то поля нет, запрос возвращает ошибку 401')
-    @allure.description('Передаем данные сначала без email потом без password, также проверяем некорректные данные')
+    @allure.title('Тест на авторизацию без указания email или пароля')
+    @allure.description('Передаем данные сначала без email, затем без password, также проверяем некорректные данные')
     @pytest.mark.parametrize("email, password", [
         ("ivan_0052@test.ru", ""),
         ("", "qwerrty1234"),
         ("ivan_0052@test", "qwerrty1234"),
-        ("ivan_0052@test.ru", "qw"),
+        ("ivan_0052@test.ru", "qw")
     ])
     def test_authentication_without_login_or_password(self, email, password):
+        description = f"Тест на авторизацию без указания email='{email}' или пароля='{password}'"
+        allure.dynamic.description(description)
+
         data = {
             "email": email,
             "password": password
@@ -29,3 +32,4 @@ class TestLoginUser:
         response = requests.post(f'{Links.HOST}{Links.LOGIN}', json=data)
 
         assert response.status_code == 401 and response.json() == BodyResponse.MESSAGE_401_NONE_VALUE_IN_FIELD
+

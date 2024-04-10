@@ -11,34 +11,28 @@ class Links:
     GET_ORDER_USER = "/api/orders"
 
 
+
 class DataUser:
     fake = Faker()
     name = fake.name()
     password = fake.password()
     email = fake.email()
 
-    creating_new_user = {"email": email,
-                         "password": password,
-                         "name": name}
+    @staticmethod
+    def creating_new_user():
+        fake = Faker()
+        creating_new_user = {"email": fake.email(),
+                             "password": fake.password(),
+                             "name": fake.name()}
+        return creating_new_user
 
-    creating_double_user = {"email": 'ivan_0052@test.ru',
-                            "password": 'qwerrty1234',
-                            "name": 'ivan_0052'}
+    # creating_double_user = {"email": 'ivan_0052@test.ru',
+    #                         "password": 'qwerrty1234',
+    #                         "name": 'ivan_0052'}
 
     user = {"email": 'ivan_0052@test.ru',
             "password": 'qwerrty1234'
             }
-
-    @staticmethod
-    def get_token_user():
-        login_data = DataUser.creating_new_user
-        response = requests.post(f"{Links.HOST}{Links.CREATE_USER}", json=login_data)
-        token = response.json().get('accessToken')
-        headers = {
-            'Authorization': f'{token}',
-            'Content-Type': 'application/json'
-        }
-        return headers
 
     @staticmethod
     def get_updated_data():
@@ -46,6 +40,18 @@ class DataUser:
         updated_data = {"email": fake.email(),
                         "name": fake.name()}
         return updated_data
+
+    @staticmethod
+    def get_updated_data_name():
+        fake = Faker()
+        updated_data_name = {"name": fake.name()}
+        return updated_data_name
+
+    @staticmethod
+    def get_updated_data_email():
+        fake = Faker()
+        updated_data_email = {"email": fake.email()}
+        return updated_data_email
 
 
 class IngredientOrder:
